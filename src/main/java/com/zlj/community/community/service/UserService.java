@@ -1,0 +1,18 @@
+package com.zlj.community.community.service;
+
+import com.zlj.community.community.entity.User;
+import com.zlj.community.community.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    public User findUserById(Integer id){
+        return userMapper.selectById(id);
+    }
+
+}

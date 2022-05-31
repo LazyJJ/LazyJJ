@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zlj.community.community.mapper.UserMapper">
+    <sql id="UserProperties">
+        username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <sql id="idCondition">
+        where id = #{id}
+    </sql>
+
+    <select id="selectById" resultType="User">
+        select * from user <include refid="idCondition"></include>;
+    </select>
+
+    <select id="selectByUsername" resultType="User">
+        select * from user where username = #{username};
+    </select>
+
+    <select id="selectByEmail" resultType="User">
+        select * from user where email = #{email};
+    </select>
+
+    <select id="selectAllUsers" resultType="User">
+        select * from user;
+    </select>
+
+    <select id="selectEligibleUsers" parameterType="User" resultType="User">
+        select * from user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != 0">
+                id = #{id}
+            </if>
+            <if test="username != null and username != '' ">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != '' ">
+                and password = #{password}
+            </if>
+            <if test="salt != null and salt != '' ">
+                and salt = #{salt}
+            </if>
+            <if test="email != null and email != '' ">
+                and email = #{email}
+            </if>
+            <if test="type != null and type != 0">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != 0">
+                and status = #{status}
+            </if>
+            <if test="activationCode != null and activationCode != '' ">
+                and activation_code = #{activationCode}
+            </if>
+            <if test="headerUrl != null and headerUrl != '' ">
+                and header_url = #{headerUrl}
+            </if>
+            <if test="createTime != null ">
+                and create_time = #{createTime}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertUser" parameterType="User" keyProperty="id">
+        insert into user(<include refid="UserProperties"></include>) values
+        (#{username},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},#{createTime});
+    </insert>
+
+    <update id="updateStatus">
+        update user set status = #{status} <include refid="idCondition"></include>;
+    </update>
+
+    <update id="updateHeader">
+        update user set header_url = #{headerUrl} <include refid="idCondition"></include>;
+    </update>
+
+    <update id="updatePassword">
+        update user set password = #{password} <include refid="idCondition"></include>;
+    </update>
+
+
+</mapper>
