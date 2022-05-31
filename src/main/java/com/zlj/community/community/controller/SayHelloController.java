@@ -14,4 +14,10 @@ public class SayHelloController {
         return "Hello ZLJ";
     }
 
+    @RequestMapping("/git")
+    @ResponseBody
+    public String sayGit(){
+        return "Git Exists And Working";
+    }
+
 }
